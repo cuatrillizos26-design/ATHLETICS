@@ -352,3 +352,39 @@ select.dark{background:#0B101B; border:1px solid var(--line2); color:var(--txt);
   .main{padding:14px 12px 50px;}
   .topbar{flex-wrap:wrap; gap:8px;}
 }
+
+/* ============ interactive race controls (Speed-Stars style) ============ */
+.hud-ctrl{display:flex; flex-direction:column; gap:8px; align-items:stretch; justify-content:center; min-width:0;}
+.cadwrap{width:100%; max-width:520px; margin:0 auto;}
+.cadlabel{display:flex; justify-content:space-between; align-items:baseline; font-family:var(--num); font-size:11px; letter-spacing:2px; color:var(--mut); text-transform:uppercase; margin-bottom:4px;}
+.cadlabel #cadval{font-size:17px; font-weight:700; color:var(--grn); letter-spacing:1px;}
+.cadlabel #spdval{font-size:13px; font-weight:700; letter-spacing:1px;}
+.cadbar{position:relative; height:16px; background:#1A2334; border:1px solid var(--line2); overflow:visible;
+  clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);}
+.cadbar i{display:block; height:100%; width:0%; background:linear-gradient(90deg,#1E8F62,var(--grn)); transition:width .07s linear;}
+.cadbar b{position:absolute; top:-5px; bottom:-5px; width:3px; background:var(--gold); box-shadow:0 0 10px rgba(255,197,49,.8); transform:translateX(-50%); transition:left .3s;}
+.cadbar b::after{content:"UMBRAL"; position:absolute; top:-13px; left:50%; transform:translateX(-50%); font-family:var(--num); font-size:8.5px; letter-spacing:1.5px; color:var(--gold);}
+.keyhint{font-size:11px; color:var(--mut); text-align:center; letter-spacing:.4px; line-height:1.5; margin-top:2px;}
+.keyhint b{color:var(--txt); font-family:var(--num); letter-spacing:1px;}
+.pads{display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%; max-width:520px; margin:0 auto;}
+.pad{font-family:var(--disp); font-size:26px; font-weight:700; letter-spacing:2px; padding:12px 0 14px; color:var(--txt);
+  background:linear-gradient(180deg, var(--panel3), var(--panel2)); border:1px solid var(--line2); cursor:pointer;
+  user-select:none; -webkit-user-select:none; touch-action:none; transition:transform .05s, background .05s, border-color .1s;
+  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);}
+.pad:first-child{border-left:4px solid var(--acc);}
+.pad:last-child{border-right:4px solid var(--blu);}
+.pad:hover{border-color:var(--acc);}
+.pad:active,.pad.hit{background:linear-gradient(180deg, var(--acc), var(--acc-d)); color:#fff; transform:translateY(2px) scale(.985);
+  box-shadow:0 0 22px rgba(255,90,43,.45);}
+#actionprompt{position:absolute; left:0; right:0; bottom:14%; display:flex; justify-content:center; pointer-events:none; z-index:6;}
+.actprompt{font-family:var(--disp); font-size:clamp(20px,3.4vw,34px); letter-spacing:2.5px; text-transform:uppercase; padding:8px 26px;
+  background:rgba(10,14,22,.72); border:1px solid var(--gold); color:var(--gold); animation:pulseP .5s ease-in-out infinite alternate;
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);}
+.actprompt.jump{border-color:var(--grn); color:var(--grn);}
+.actprompt.dip{border-color:var(--acc); color:#FF8A5C;}
+.actprompt b{font-family:var(--num); font-size:.62em; letter-spacing:1.5px; vertical-align:middle;}
+@keyframes pulseP{from{transform:scale(1); opacity:.85}to{transform:scale(1.06); opacity:1}}
+.ctrl-guide{display:flex; flex-direction:column; gap:8px; max-width:520px; margin:14px auto 6px; font-size:13px; color:var(--mut); text-align:center; line-height:1.45;}
+.ctrl-guide b{font-family:var(--num); color:var(--txt); letter-spacing:1.5px; background:rgba(255,255,255,.06); border:1px solid var(--line2); padding:1px 7px; margin:0 2px;}
+.st-hint.big{font-size:15px; line-height:1.7;}
+.st-hint small{font-size:10.5px; letter-spacing:1.6px; opacity:.75;}

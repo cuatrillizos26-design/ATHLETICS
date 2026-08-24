@@ -391,11 +391,10 @@ async function playEvent(m: any, evk: string, resultsView: any[]) {
       const timesAll: any[] = [];
       for (let h = 0; h < heats.length; h++) {
         if (heats[h].some((a: any) => a.id === p.id)) {
-          const eff = await askEffort(rd.name);
           const res = await G.runRace({
             evk, racers: heats[h].map((a: any) => ({ a, isPlayer: a.id === p.id })),
-            importance: tier, roundName: `${rd.name} · Serie ${h + 1}`, meetName: m.name,
-            planMul: rd.effort, playerMul: eff,
+            importance: tier, roundName: `${rd.name} ${h + 1} · pasan ${rd.topN} + tiempos`, meetName: m.name,
+            planMul: rd.effort,
           });
           for (const r of res) { applyResult(findAthById(r.id), evk, r.dq ? Infinity : r.t, r.place, null); if (!r.dq) timesAll.push(r); }
           const q = res.filter((r: any) => !r.dq);
@@ -426,11 +425,11 @@ async function playEvent(m: any, evk: string, resultsView: any[]) {
     } else {
       // single race (semi or final or direct final)
       const isFinal = ri2 === rounds.list.length - 1;
-      const eff = isFinal ? 1 : await askEffort(rd.name);
+      const qualInfo = isFinal ? "" : ` · pasan ${rd.qual}`;
       const res = await G.runRace({
         evk, racers: entrants.slice(0, rd.size).map((a: any) => ({ a, isPlayer: a.id === p.id })),
-        importance: tier, roundName: rd.name, meetName: m.name,
-        planMul: isFinal ? 1 : rd.effort, playerMul: eff,
+        importance: tier, roundName: rd.name + qualInfo, meetName: m.name,
+        planMul: isFinal ? 1 : rd.effort,
       });
       for (const r of res) { const a = findAthById(r.id); if (a && !r.dq && !a.isPlayer) { applyResult(a, evk, r.t, r.place, isFinal ? m : null); bumpRankPts(a, evk, r.t, r.place, tier); } }
       if (isFinal) { finalRes = res; viewRows = buildRows(res, p, evk); }
@@ -676,23 +675,6 @@ function simulateMeetWithoutPlayer(m: any) {
 }
 
 /* ---------- overlays ---------- */
-function askEffort(roundName: string): Promise<number> {
-  return new Promise((res) => {
-    const ov = document.getElementById("ovroot")!;
-    ov.innerHTML = `<div class="ov"><div class="ov-box panel">
-      <div class="panel-title b">${roundName}</div>
-      <p class="mb14">¿Cuánto quieres gastar en esta ronda? Guarda energía para la final: la fatiga se acumula.</p>
-      <div class="btnrow">
-        <button class="btn primary" id="ef1">A TOPE<small style="display:block;font-size:10px;letter-spacing:1px">100%</small></button>
-        <button class="btn" id="ef2">NORMAL<small style="display:block;font-size:10px;letter-spacing:1px">controlado</small></button>
-        <button class="btn ghost" id="ef3">DOSIFICAR<small style="display:block;font-size:10px;letter-spacing:1px">pasar por puesto</small></button>
-      </div></div></div>`;
-    const done = (v: number) => { ov.innerHTML = ""; snd("click"); res(v); };
-    (ov.querySelector("#ef1") as HTMLElement).onclick = () => done(1);
-    (ov.querySelector("#ef2") as HTMLElement).onclick = () => done(0.975);
-    (ov.querySelector("#ef3") as HTMLElement).onclick = () => done(0.95);
-  });
-}
 function showRoundSummary(title: string, names: string[], p: any): Promise<void> {
   return new Promise((res) => {
     const ov = document.getElementById("ovroot")!;

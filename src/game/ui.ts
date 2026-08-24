@@ -147,7 +147,7 @@ export function showTutorial(step: number): void {
     { t: "1 · Entrena", b: "Cada día puedes hacer UNA sesión: velocidad, resistencia, fuerza, técnica… Cada una mejora atributos distintos y acumula fatiga." },
     { t: "2 · Gestiona la fatiga", b: "Con fatiga alta rindes menos, mejoras menos y te lesionas. Descansa y haz recuperación ligera para llegar en forma a las citas clave." },
     { t: "3 · Compite", b: "El calendario tiene meetings locales, regionales, el Nacional y grandes campeonatos. Cuando llegue el día, pulsa COMPETIR." },
-    { t: "4 · La carrera es tuya", b: "En carrera eliges tácticas por fases: conservar, mantener, atacar, esprintar. Vigila la barra de energía: si te vacías, lo pagarás." },
+    { t: "4 · La carrera es tuya", b: "TÚ corres: alterna ◀ ▶ (o A·D, o los botones) a toda velocidad para esprintar. Reacciona al disparo, no te pases del umbral de cadencia o vaciarás la energía, salta las vallas con ESPACIO e inclínate en la meta." },
     { t: "5 · Sube en el ranking", b: "Las buenas marcas dan puntos de ranking, premios y fama. Del meeting local al podio olímpico: construye tu historia." },
   ];
   const s = steps[step];
@@ -567,6 +567,13 @@ SCREENS.meetEntry = () => {
     </div>
     <div class="col">
       <div class="panel"><div class="panel-title b">Rondas</div><div class="small mut">${m.tier >= 3 ? "Los grandes campeonatos tienen SERIES → SEMIFINAL → FINAL según la prueba. Dosifica en series: pasar por tiempos también cuenta." : "Este meeting es a final directa. Una sola carrera, sin guardarse nada."}</div></div>
+      <div class="panel"><div class="panel-title g">Cómo se corre</div>
+        <div class="small mut">
+          <b style="color:var(--txt)">◀ ▶</b> alterna teclas (A·D / Z·X) o los botones en pantalla: la frecuencia de toque es tu velocidad.<br>
+          Reacciona al disparo (si te adelantas, salida nula).<br>
+          La barra de <b style="color:var(--grn)">cadencia</b> marca tu <b>umbral sostenible</b>: por encima, la energía se agota — gestiona el ritmo según la distancia.<br>
+          <b style="color:var(--txt)">ESPACIO</b> salta las vallas e inclínate al cruzar la meta (−0.08 s).
+        </div></div>
       <div class="panel hot"><div class="panel-title">Listo para competir</div>
         <div class="small mut mb8">Seleccionado: <b class="num">${[...(S.params.picked || []), ...(S.params.pickedR || [])].map((e: string) => EV[e] ? EV[e].label : RELAYS[e].label).join(", ") || "nada"}</b></div>
         <button class="btn primary big wide" data-act="meet-start" ${[...(S.params.picked || []), ...(S.params.pickedR || [])].length ? "" : "disabled"}>¡A LA PISTA!</button>
